@@ -1,22 +1,29 @@
 package main
 
 import (
-	"banco/clientes"
 	"banco/contas"
 	"fmt"
 )
 
-func main() {
-	clienteThiago := clientes.Titular{
-		Nome: "Thiago", CPF: "333.888.000-00", Profissao: "Desenvolvedor",
-	}
-	contaThiago := contas.ContaCorrente{
-		Titular:       clienteThiago,
-		NumeroAgencia: 123,
-		NumeroConta:   123456,
-		Saldo:         595548.45,
-	}
+func PagarBoleto(conta verificarConta, valorBoleto float64) {
+	conta.Sacar(valorBoleto)
+}
 
-	fmt.Println(contaThiago)
+type verificarConta interface {
+	Sacar(valor float64) string
+}
+
+func main() {
+	contaThiago := contas.ContaPoupanca{}
+
+	contaThiago.Depositar(100)
+	contaThiago.Depositar(200)
+	contaThiago.Sacar(150)
+
+	fmt.Println(contaThiago.ObterSaldo())
+
+	PagarBoleto(&contaThiago, 60)
+
+	fmt.Println(contaThiago.ObterSaldo())
 
 }
